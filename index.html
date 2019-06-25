@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zero Gravity Tetris</title>
+    <link rel="stylesheet" type="text/css" href="tetris.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=B612+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="Page">
+      <div class="Section">
+        <h1 id="Title">Zero Gravity Tetris</h1>
+      </div>
+
+      <div class="Game">
+          <div class="Hold"><h2>Hold: </h2> <canvas id="Held-piece" width="80" height="80"></canvas></div>
+           
+            <canvas id="canvas" width="200" height="400"></canvas>
+
+          <div class="Preview"><h2>Preview</h2></h1></div>
+          
+      </div>
+
+      <div class="Section">
+          <div id="Score-text"><h3>Lines</h3></div>
+          <div><h1 id="Score-value">0</h1></div>
+        </div>
+    </div>
+  </body>
+
+  <script rel="text/javascript" src="tetrominoes.js"></script>
+  <script rel="text/javascript" src="tetris.js"></script>
+</html>
