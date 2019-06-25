@@ -5,8 +5,6 @@ body {
 }
 
 .Page {
-
-
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -33,7 +31,7 @@ h2 {
 .Game{
   display:flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .Preview{
@@ -44,10 +42,84 @@ h2 {
   margin-left: 20px;
 }
 
-#Score-text{
+#Score{
   font-family: 'Montserrat', sans-serif;
+  text-align:center;
 }
 
 #Score-value{
   font-family: 'Montserrat', sans-serif;
+}
+
+.Below{
+  width:100%;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items:center;
+}
+
+.Below-item{
+  margin-left: 50px; 
+  margin-right: 50px; 
+  font-family: 'Montserrat', sans-serif;
+}
+
+#controls {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+.Controls-screen{
+  background-color: white;
+  margin:auto;
+  width: 100%;
+  height:100%;
+  flex-wrap: wrap;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+#Game-over{
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+
+}
+.Game-over-screen{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-size: 50px;
+  margin-top: 20%;
+  justify-content: center;
+}
+
+.Preview{
+  display:flex;
+  flex-direction: column; 
+  align-items: center;
+}
+
+.Preview canvas{
+  margin-top: 20px;
 }

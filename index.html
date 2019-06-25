@@ -12,25 +12,54 @@
   </head>
 
   <body>
+    <div id="Game-over">
+      <h1 class="Game-over-screen"> GAME OVER </h1>
+    </div>
+    <div id="controls" onclick="off()">
+      <div class="Controls-screen">
+        <h3>&#8593;: rotate</h3>
+        <h3>&#8593; + ALT/CMD : move up</h3>
+        <h3>&#8592; : move left</h3>
+        <h3>&#8594; : move right</h3>
+        <h3>&#8595; : move down</h3>
+        <h3>SHIFT : hold piece</h3>
+        <h3>SPACE : hard drop</h3>
+
+      </div>
+    </div>
     <div class="Page">
+      
       <div class="Section">
         <h1 id="Title">Zero Gravity Tetris</h1>
       </div>
 
       <div class="Game">
-          <div class="Hold"><h2>Hold: </h2> <canvas id="Held-piece" width="80" height="80"></canvas></div>
-           
+          <div class="Hold"><h2>Hold: </h2> <canvas id="Held-piece" width="80" height="80""></canvas></div>
             <canvas id="canvas" width="200" height="400"></canvas>
-
-          <div class="Preview"><h2>Preview</h2></h1></div>
-          
+          <div class="Preview">
+            <h2>Preview:</h2>
+            <canvas id="onDeck" width="80" height="80" style="border:1px solid #000000;"></canvas>
+            <canvas id="inTheWhole" width="80" height="80" style="border:1px solid #000000;"></canvas>
+            <canvas id="inTheDoubleWhole" width="80" height="80" style="border:1px solid #000000;"></canvas>
+          </div>
       </div>
 
-      <div class="Section">
-          <div id="Score-text"><h3>Lines</h3></div>
-          <div><h1 id="Score-value">0</h1></div>
+      <div class="Below">
+          <div class="Below-item" onclick="on()" style = "border: 1px solid black; padding-left:10px; padding-right: 10px;" ><h3>Controls</h3></div>
+          <div class="Below-item" id="Score"><h3>Lines</h3><div><h1 id="Score-value">0</h1></div></div>
+          <div class="Below-item" >
+            <h4 style="text-align:center;">Coder: 
+              <div>
+                  <a target = "_blank" href = "http://dionolympia.github.io/portfolio" style= "text-decoration: none !important;">
+                    <h4>Dion Olympia</h4>
+                  </a>
+              </div>
+            </h4>
         </div>
-    </div>
+          
+      </div>
+    
+   
   </body>
 
   <script rel="text/javascript" src="tetrominoes.js"></script>

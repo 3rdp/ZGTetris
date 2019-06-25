@@ -19,13 +19,13 @@ const HOLD_ROWS = 4;
 const HOLD_COLS = 4;
 
 const PIECES = [
-  [Z, "red"],
-  [S, "green"],
-  [J, "blue"],
-  [T, "purple"],
-  [L, "orange"],
-  [I, "rgb(117,218,255)"],
-  [O, "rgb(244, 217, 66)"],
+  [Z, "#D12641"],
+  [S, "#60C127"],
+  [J, "#2B51C7"],
+  [T, "#B331A1"],
+  [L, "#E76F1A"],
+  [I, "#30C5F5"],
+  [O, "#EFB239"],
   
 ]
 
@@ -36,6 +36,9 @@ var heldTetromino = 0;
 var heldColor = 0;
 var usedHold = false;
 var lastPiece = 8;
+var isGameOver = false;
+var lineUp = [];
+
 
 var board = [];
 var score = 0;
@@ -93,75 +96,94 @@ function CONTROLUP(event){
 
 function CONTROLDOWN(event){
 
-  // Shift press
-  if(event.keyCode == 16){
+  if(!isGameOver){
 
-    if(!usedHold){
-      p.holdPiece(p.color);
-      ghostPiece.erase();
-      p.drawGhost();
+    // Shift press
+    if(event.keyCode == 16){
+
+      if(!usedHold){
+        p.holdPiece(p.color);
+        ghostPiece.erase();
+        p.drawGhost();
 
 
-      if(holdIsEmpty){
-        holdIsEmpty = false;
+        if(holdIsEmpty){
+          holdIsEmpty = false;
+        }
+
+        usedHold = true;
       }
 
-      usedHold = true;
     }
 
-  }
+    // Space press
+    else if(event.keyCode == 32){
+      p.lock();
 
-  // Space press
-  else if(event.keyCode == 32){
-    p.lock();
+      randomPiece();
 
-    randomPiece();
+      //P equals next piece in queue
 
-    if(p.collision(0,0,p.currentRotation)){
-      document.getElementById("Game-over").style.display = "visible";
+      /*
+      p = new Piece( PIECES[randomNumber][0], PIECES[randomNumber][1]);
+
+      if(randomNumber == 6){
+        p.y = -1;
+      }
+      */
+
+      if(p.collision(0,0,p.currentRotation)){
+        document.getElementById("Game-over").style.display = "block";
+        console.log("Game Over")
+        isGameOver = true;
+      }
+
+      else{
+        p.drawGhost();
+        p.draw();
+        usedHold = false;
+      }
+      
     }
 
-    else{
-      p.drawGhost();
-      p.draw();
-      usedHold = false;
+    // Up Arrow press
+    else if(event.keyCode == 38){
+      upArrow = true;
+      if(alt){
+        p.moveUp();
+      }
+      else{
+        p.rotate();
+      }
     }
+
+    // Alt press
+    else if(event.keyCode == 91){  
+      alt = true;
+    }
+
     
-  }
-
-  // Up Arrow press
-  else if(event.keyCode == 38){
-    upArrow = true;
-    if(alt){
-      p.moveUp();
+    // Left Arrow press
+    else if(event.keyCode == 37){
+      p.moveLeft();
     }
-    else{
-      p.rotate();
+
+    // Right Arrow press
+    else if(event.keyCode == 39){
+      p.moveRight();
+    }
+
+    // Down Arrow press
+    else if(event.keyCode == 40){
+      p.moveDown();
+    }
+  
+  }
+  else{
+    if(event.keyCode == 32){
+      //reset game
     }
   }
-
-  // Alt press
-  else if(event.keyCode == 91){  
-    alt = true;
-  }
-
-  
-  // Left Arrow press
-  else if(event.keyCode == 37){
-    p.moveLeft();
-  }
-
-  // Right Arrow press
-  else if(event.keyCode == 39){
-    p.moveRight();
-  }
-
-  // Down Arrow press
-  else if(event.keyCode == 40){
-    p.moveDown();
-  }
-  
-
 }
 
 function randomPiece(){
@@ -174,11 +196,15 @@ function randomPiece(){
 
   lastPiece = randomNumber;
 
+  // Add random piece to queue;
+
+  
   p = new Piece( PIECES[randomNumber][0], PIECES[randomNumber][1]);
 
-  if(randomNumber == 5 || randomNumber == 6){
+  if(randomNumber == 6){
     p.y = -1;
   }
+  
 
 }
 
@@ -212,9 +238,9 @@ Piece.prototype.switchHold = function(playerPiece){
   // Switch player piece object to hold object
   p.erase();
   p = tempHoldObject;
-  p.x , p.y = 0;
-
-  console.log("Switched player's piece to: " + p.color);
+  p.currentRotation = p.tetromino[0];
+  p.x = 3;
+  p.y = 0;
 
   // Draw hold object in player canvas
   p.draw();
@@ -229,7 +255,6 @@ Piece.prototype.holdPiece = function(color){
 
     // Switch held piece and player's piece
     this.switchHold(this);
-    console.log("switch");
 
   }
 
@@ -239,7 +264,6 @@ Piece.prototype.holdPiece = function(color){
     // Held piece becomes player's piece
     holdObject = this;
     held = holdObject.tetromino[0];
-    console.log("Switched held piece to: " + holdObject.color);
 
     // Draw player's piece in hold space
     for (var r = 0; r < (held.length); r++) {
@@ -252,7 +276,11 @@ Piece.prototype.holdPiece = function(color){
 
     // Replace player's piece with random piece
     p.erase();
+
+    // replace player's piece with next in queue
     randomPiece();
+
+
     p.draw();
 
     console.log("Switched player's piece to: " + p.color);
@@ -460,7 +488,13 @@ var alt = false;
 var upArrow = false;
 
 drawBoard();
+
+
+// Create the queue (3 pieces)
 randomPiece();
+
+
+
 p.draw();
 var ghostPiece = new Piece(p.tetromino, GHOST);
 p.drawGhost();
@@ -468,3 +502,10 @@ p.drawGhost();
 document.addEventListener("keydown", CONTROLDOWN);
 document.addEventListener("keyup", CONTROLUP);
 
+function on() {
+  document.getElementById("controls").style.display = "block";
+}
+
+function off() {
+  document.getElementById("controls").style.display = "none";
+}
