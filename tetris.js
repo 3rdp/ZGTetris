@@ -9,24 +9,42 @@ const ctx = canvas.getContext("2d");
 const holdCanvas = document.getElementById("Held-piece");
 const holdContext = holdCanvas.getContext("2d");
 
+const TOP_CVS = document.getElementById("onDeck");
+const TOP_CTX = TOP_CVS.getContext("2d");
+
+const MID_CVS = document.getElementById("inTheHole");
+const MID_CTX = MID_CVS.getContext("2d");
+
+const BOT_CVS= document.getElementById("inTheDoubleHole");
+const BOT_CTX = BOT_CVS.getContext("2d");
+
+
 const BLOCKSIZE = 20;
 const ROWS = 20;
 const COLS = 10;
-const EMPTY = "white";
-const GHOST = "grey";
 
 const HOLD_ROWS = 4;
 const HOLD_COLS = 4;
 
+// Piece colors
+const EMPTY = "white";
+const GHOST = "grey";
+const RED = "#D12641";
+const GREEN = "#60C127";
+const DARK_BLUE = "#2B51C7";
+const PURPLE = "#B331A1";
+const ORANGE = "#E76F1A";
+const LIGHT_BLUE = "#30C5F5";
+const YELLOW = "#EFB239";
+
 const PIECES = [
-  [Z, "#D12641"],
-  [S, "#60C127"],
-  [J, "#2B51C7"],
-  [T, "#B331A1"],
-  [L, "#E76F1A"],
-  [I, "#30C5F5"],
-  [O, "#EFB239"],
-  
+  [Z, RED],
+  [S, GREEN],
+  [J, DARK_BLUE],
+  [T, PURPLE],
+  [L, ORANGE],
+  [I, LIGHT_BLUE],
+  [O, YELLOW],
 ]
 
 var p = new Piece( PIECES[0][0], PIECES[0][1]);
@@ -37,7 +55,10 @@ var heldColor = 0;
 var usedHold = false;
 var lastPiece = 8;
 var isGameOver = false;
-var lineUp = [];
+var queue = [];
+var topPiece;
+var midPiece;
+var botPiece;
 
 
 var board = [];
@@ -120,19 +141,26 @@ function CONTROLDOWN(event){
     else if(event.keyCode == 32){
       p.lock();
 
-      randomPiece();
 
-      //P equals next piece in queue
+      //randomPiece();
+      pieceFromPreview();
+ 
 
-      /*
-      p = new Piece( PIECES[randomNumber][0], PIECES[randomNumber][1]);
-
-      if(randomNumber == 6){
-        p.y = -1;
+      // Switch "I" piece to horizontal position if space is limited
+      if(p.color == LIGHT_BLUE && p.collision(0,0,p.currentRotation)){
+        p.rotationIndex = (p.rotationIndex + 1) % p.tetromino.length;
+        p.currentRotation = p.tetromino [p.rotationIndex];
+        while(p.collision(0,0,p.currentRotation)){
+          p.y--;
+        }
+        p.draw();
       }
-      */
 
       if(p.collision(0,0,p.currentRotation)){
+        while(p.collision(0,0,p.currentRotation)){
+          p.y--;
+        }
+        p.draw();
         document.getElementById("Game-over").style.display = "block";
         console.log("Game Over")
         isGameOver = true;
@@ -186,6 +214,25 @@ function CONTROLDOWN(event){
   }
 }
 
+function unshiftQueue(){
+  let randomNumber =Math.floor(Math.random() * 7);
+
+  while(randomNumber == lastPiece){
+    randomNumber =Math.floor(Math.random() * 7);
+  }
+
+  lastPiece = randomNumber;
+
+  queue.unshift(randomNumber);
+
+}
+
+function popQueue(){
+
+  return queue.pop();
+
+}
+
 function randomPiece(){
 
   let randomNumber =Math.floor(Math.random() * 7);
@@ -197,8 +244,9 @@ function randomPiece(){
   lastPiece = randomNumber;
 
   // Add random piece to queue;
+  // 
 
-  
+  // Change player's piece to onDeck piece
   p = new Piece( PIECES[randomNumber][0], PIECES[randomNumber][1]);
 
   if(randomNumber == 6){
@@ -206,6 +254,102 @@ function randomPiece(){
   }
   
 
+}
+
+function initializeQueue(){
+  unshiftQueue();
+  console.log(queue);
+  unshiftQueue();
+  console.log(queue);
+  unshiftQueue();
+  console.log(queue);
+
+}
+
+function drawQueue(){
+
+  let top = queue[2];
+  let mid = queue[1];
+  let bot = queue[0];
+
+  topPiece = new Piece( PIECES[top][0], PIECES[top][1]);
+  midPiece = new Piece( PIECES[mid][0], PIECES[mid][1]);
+  botPiece = new Piece( PIECES[bot][0], PIECES[bot][1]);
+
+  if(top == 5){
+    topPiece.rotationIndex = (topPiece.rotationIndex + 1) % topPiece.tetromino.length;
+    topPiece.currentRotation = topPiece.tetromino [topPiece.rotationIndex];
+  }
+
+  if(mid == 5){
+    midPiece.rotationIndex = (midPiece.rotationIndex + 1) % midPiece.tetromino.length;
+    midPiece.currentRotation = midPiece.tetromino [midPiece.rotationIndex];
+  }
+
+  if(bot == 5){
+    botPiece.rotationIndex = (botPiece.rotationIndex + 1) % botPiece.tetromino.length;
+    botPiece.currentRotation = botPiece.tetromino [botPiece.rotationIndex];
+  }
+
+  for (var r = 0; r < (topPiece.tetromino[0].length); r++) {
+    for (var c = 0; c < (topPiece.tetromino[0].length); c++) {
+      if(topPiece.currentRotation[r][c]){
+        drawBlock(TOP_CTX, c, r, topPiece.color);
+      }
+    }
+  }
+  
+  for (var r = 0; r < (midPiece.tetromino[0].length); r++) {
+    for (var c = 0; c < (midPiece.tetromino[0].length); c++) {
+      if(midPiece.currentRotation[r][c]){
+        drawBlock(MID_CTX, c, r, midPiece.color);
+      }
+    }
+  }
+  
+  for (var r = 0; r < (botPiece.tetromino[0].length); r++) {
+    for (var c = 0; c < (botPiece.tetromino[0].length); c++) {
+      if(botPiece.currentRotation[r][c]){
+        drawBlock(BOT_CTX, c, r, botPiece.color);
+      }
+    }
+  }
+  
+
+}
+
+function pieceFromPreview(){
+
+  let newPiece = popQueue();
+
+  p = new Piece(PIECES[newPiece][0], PIECES[newPiece][1]);
+  
+  for (var r = 0; r < (topPiece.tetromino[0].length); r++) {
+    for (var c = 0; c < (topPiece.tetromino[0].length); c++) {
+      if(topPiece.currentRotation[r][c]){
+        drawBlock(TOP_CTX, c, r, EMPTY);
+      }
+    }
+  }
+
+  for (var r = 0; r < (midPiece.tetromino[0].length); r++) {
+    for (var c = 0; c < (midPiece.tetromino[0].length); c++) {
+      if(midPiece.currentRotation[r][c]){
+        drawBlock(MID_CTX, c, r, EMPTY);
+      }
+    }
+  }
+
+  for (var r = 0; r < (botPiece.tetromino[0].length); r++) {
+    for (var c = 0; c < (botPiece.tetromino[0].length); c++) {
+      if(botPiece.currentRotation[r][c]){
+        drawBlock(BOT_CTX, c, r, EMPTY);
+      }
+    }
+  }
+
+  unshiftQueue();
+  drawQueue();
 }
 
 Piece.prototype.switchHold = function(playerPiece){
@@ -233,7 +377,7 @@ Piece.prototype.switchHold = function(playerPiece){
         drawBlock(holdContext, c, r, playerPiece.color);
       }
     }
-}
+  }
 
   // Switch player piece object to hold object
   p.erase();
@@ -274,12 +418,12 @@ Piece.prototype.holdPiece = function(color){
       }
     }
 
-    // Replace player's piece with random piece
+    // OLD : Replace player's piece with random piece
     p.erase();
 
     // replace player's piece with next in queue
-    randomPiece();
-
+    //randomPiece();
+    pieceFromPreview();
 
     p.draw();
 
@@ -490,9 +634,16 @@ var upArrow = false;
 drawBoard();
 
 
-// Create the queue (3 pieces)
-randomPiece();
+//OLD: give player a random piece (start of game)
+//randomPiece();
 
+
+
+// NEW: Create the queue (3 pieces)
+
+initializeQueue();
+drawQueue();
+pieceFromPreview();
 
 
 p.draw();

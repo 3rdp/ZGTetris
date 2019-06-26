@@ -89,7 +89,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'B612 Mono';
 }
 
 
@@ -123,5 +123,9 @@ h2 {
 }
 
 .Preview canvas{
+  margin-top: 20px;
+}
+
+#Held-piece{
   margin-top: 20px;
 }
