@@ -139,12 +139,19 @@ function CONTROLDOWN(event){
 
     // Space press
     else if(event.keyCode == 32){
+
+      console.log("drop");
+
       p.lock();
 
-
-      //randomPiece();
       pieceFromPreview();
- 
+
+      if(p.color != YELLOW){
+        p.y = 0;
+      }
+      else{
+        p.y= -1;
+      }      
 
       // Switch "I" piece to horizontal position if space is limited
       if(p.color == LIGHT_BLUE && p.collision(0,0,p.currentRotation)){
@@ -162,11 +169,11 @@ function CONTROLDOWN(event){
         }
         p.draw();
         document.getElementById("Game-over").style.display = "block";
-        console.log("Game Over")
         isGameOver = true;
       }
 
       else{
+
         p.drawGhost();
         p.draw();
         usedHold = false;
@@ -182,6 +189,7 @@ function CONTROLDOWN(event){
       }
       else{
         p.rotate();
+        console.log("rotate");
       }
     }
 
@@ -205,11 +213,16 @@ function CONTROLDOWN(event){
     else if(event.keyCode == 40){
       p.moveDown();
     }
+
+    // "R" = restart
+    else if(event.keyCode == 82){
+      location.reload();
+    }
   
   }
   else{
-    if(event.keyCode == 32){
-      //reset game
+    if(event.keyCode == 82){
+      location.reload();
     }
   }
 }
@@ -233,37 +246,10 @@ function popQueue(){
 
 }
 
-function randomPiece(){
-
-  let randomNumber =Math.floor(Math.random() * 7);
-
-  while(randomNumber == lastPiece){
-    randomNumber =Math.floor(Math.random() * 7);
-  }
-
-  lastPiece = randomNumber;
-
-  // Add random piece to queue;
-  // 
-
-  // Change player's piece to onDeck piece
-  p = new Piece( PIECES[randomNumber][0], PIECES[randomNumber][1]);
-
-  if(randomNumber == 6){
-    p.y = -1;
-  }
-  
-
-}
-
 function initializeQueue(){
   unshiftQueue();
-  console.log(queue);
   unshiftQueue();
-  console.log(queue);
   unshiftQueue();
-  console.log(queue);
-
 }
 
 function drawQueue(){
@@ -384,7 +370,12 @@ Piece.prototype.switchHold = function(playerPiece){
   p = tempHoldObject;
   p.currentRotation = p.tetromino[0];
   p.x = 3;
-  p.y = 0;
+  if(p.color != YELLOW){
+    p.y = 0;
+  }
+  else{
+    p.y= -1;
+  }
 
   // Draw hold object in player canvas
   p.draw();
@@ -418,21 +409,25 @@ Piece.prototype.holdPiece = function(color){
       }
     }
 
-    // OLD : Replace player's piece with random piece
+    // replace player's piece with next in queue  
     p.erase();
-
-    // replace player's piece with next in queue
-    //randomPiece();
     pieceFromPreview();
 
-    p.draw();
+    if(p.color != YELLOW){
+      p.y = 0;
+    }
+    else{
+      p.y= -1;
+    }
+  
 
-    console.log("Switched player's piece to: " + p.color);
+    p.draw();
   }
 
 }
 
 Piece.prototype.draw = function() {
+
   for (var r = 0; r < this.pieceSize; r++) {
     for (var c = 0; c < this.pieceSize; c++) {
       if(this.currentRotation[r][c]){
@@ -454,6 +449,7 @@ Piece.prototype.erase = function() {
 
 Piece.prototype.lock = function(){
 
+  // Hard drop
   while(!p.collision(0,1,p.currentRotation)){
     p.erase();
     p.y++;
@@ -633,13 +629,7 @@ var upArrow = false;
 
 drawBoard();
 
-
-//OLD: give player a random piece (start of game)
-//randomPiece();
-
-
-
-// NEW: Create the queue (3 pieces)
+// Create the queue (3 pieces)
 
 initializeQueue();
 drawQueue();
