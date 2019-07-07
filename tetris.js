@@ -354,6 +354,7 @@ Piece.prototype.switchHold = function(playerPiece){
 
   // Switch hold object to player piece object
   holdObject = playerPiece;
+  holdObject.rotationIndex = 0;
   held = holdObject.tetromino[0];
 
   // Draw player piece in hold space
@@ -378,6 +379,7 @@ Piece.prototype.switchHold = function(playerPiece){
   }
 
   // Draw hold object in player canvas
+  p.rotationIndex = 0;
   p.draw();
 
 
@@ -398,6 +400,7 @@ Piece.prototype.holdPiece = function(color){
 
     // Held piece becomes player's piece
     holdObject = this;
+    holdObject.rotationIndex = 0;
     held = holdObject.tetromino[0];
 
     // Draw player's piece in hold space
@@ -419,7 +422,8 @@ Piece.prototype.holdPiece = function(color){
     else{
       p.y= -1;
     }
-  
+
+    p.rotationIndex = 0;
 
     p.draw();
   }
