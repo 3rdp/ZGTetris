@@ -1,5 +1,4 @@
 // Zero Gravity Tetris
-// AKA Take-your-Time Tetris
 // by Dion Olympia
 
 // Get canvas from HTML and use Context API
