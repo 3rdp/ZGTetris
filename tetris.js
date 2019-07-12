@@ -161,7 +161,8 @@ function CONTROLDOWN(event){
           p.y--;
         }
         p.draw();
-      }
+        console.log("Test");
+      }r
 
       if(p.collision(0,0,p.currentRotation)){
         while(p.collision(0,0,p.currentRotation)){
@@ -371,6 +372,7 @@ Piece.prototype.switchHold = function(playerPiece){
   p = tempHoldObject;
   p.currentRotation = p.tetromino[0];
   p.x = 3;
+
   if(p.color != YELLOW){
     p.y = 0;
   }
@@ -378,9 +380,34 @@ Piece.prototype.switchHold = function(playerPiece){
     p.y= -1;
   }
 
-  // Draw hold object in player canvas
-  p.rotationIndex = 0;
-  p.draw();
+  // Switch "I" piece to horizontal position if space is limited
+  if(p.color == LIGHT_BLUE && p.collision(0,0,p.currentRotation)){
+    p.rotationIndex = (p.rotationIndex + 1) % p.tetromino.length;
+    p.currentRotation = p.tetromino [p.rotationIndex];
+    while(p.collision(0,0,p.currentRotation)){
+      p.y--;
+    }
+    p.draw();
+    console.log("Test");
+  }r
+
+  if(p.collision(0,0,p.currentRotation)){
+    while(p.collision(0,0,p.currentRotation)){
+      p.y--;
+    }
+    p.draw();
+    document.getElementById("Game-over").style.display = "block";
+    isGameOver = true;
+  }
+
+  else{
+    p.rotationIndex = 0;
+    p.drawGhost();
+    p.draw();
+    usedHold = false;
+  }
+
+
 
 
 }
