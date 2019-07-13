@@ -368,6 +368,7 @@ Piece.prototype.switchHold = function(playerPiece){
 
   // Switch player piece object to hold object
   p.erase();
+  ghostPiece.erase();
   p = tempHoldObject;
   p.currentRotation = p.tetromino[0];
   p.x = 3;
@@ -378,6 +379,8 @@ Piece.prototype.switchHold = function(playerPiece){
   else{
     p.y= -1;
   }
+
+  p.rotationIndex = 0;
 
   // Switch "I" piece to horizontal position if space is limited
   if(p.color == LIGHT_BLUE && p.collision(0,0,p.currentRotation)){
@@ -403,7 +406,6 @@ Piece.prototype.switchHold = function(playerPiece){
     p.rotationIndex = 0;
     p.drawGhost();
     p.draw();
-    usedHold = false;
   }
 
 
