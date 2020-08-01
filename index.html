@@ -38,10 +38,10 @@
       </div>
 
       <div class="Game">
-          <div class="Hold"><h2>Hold: </h2> <canvas id="Held-piece" width="80" height="80""></canvas></div>
+          <div class="Hold"><h2>HOLD: </h2> <canvas id="Held-piece" width="80" height="80""></canvas></div>
             <canvas id="canvas" width="200" height="400"></canvas>
           <div class="Preview">
-            <h2>Preview:</h2>
+            <h2>PREVIEW:</h2>
             <canvas id="onDeck" width="80" height="80"></canvas>
             <canvas id="inTheHole" width="80" height="80"></canvas>
             <canvas id="inTheDoubleHole" width="80" height="80"></canvas>
@@ -49,22 +49,18 @@
       </div>
 
       <div class="Below">
-          <div class="Below-item" onclick="on()" style = "border: 1px solid black; padding-left:10px; padding-right: 10px;" ><h3>Controls</h3></div>
-          <div class="Below-item number" id="Score"><h3>Lines</h3><div><h1 id="Score-value" class="value">0</h1></div></div>
-          <div class="Below-item number" id="Combos"><h3>Combos</h3><div><h1 id="Combos-value" class="value">0</h1></div></div>
-          <div class="Below-item" >
-            <h4 style="text-align:center;">Coder: 
-              <div>
-                  <a target = "_blank" href = "http://dionolympia.github.io/portfolio" style= "text-decoration: none !important;">
-                    <h4>Dion Olympia</h4>
-                  </a>
-              </div>
-            </h4>
+          <div class="Below-item" id="controls-button" onclick="on()" style = "border: 1px solid black; padding-left:10px; padding-right: 10px;" ><h3  class="button" >Controls</h3></div>
+          <div class="Below-item number" id="Score"><h3>LINES</h3><div><h1 id="Score-value" class="value">0</h1></div></div>
+          <div class="Below-item number" id="Combos"><h3>COMBOS</h3><div><h1 id="Combos-value" class="value">0</h1></div></div>
+
+            <a  id="coder" class="Below-item button" style = "border: 1px solid black; padding-left:10px; padding-right: 10px;" target = "_blank" href = "http://dionolympia.com" style= "text-decoration: none !important;">
+              <h3>Coder</h3>
+            </a>
+
         </div>
-          
-      </div>
+
       <div class="Below">
-        <div class="Below-item number" id="HighestCombo"><h3>Highest Combo</h3><div><h1 id="Highest-combo-value" class="value">0</h1></div></div>
+        <div class="Below-item number" id="HighestCombo"><h3>HIGHEST COMBO</h3><div><h1 id="Highest-combo-value" class="value">0</h1></div></div>
       </div>
     
    

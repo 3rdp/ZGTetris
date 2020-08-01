@@ -120,7 +120,9 @@ function CONTROLDOWN(event) {
             if (!usedHold) {
                 p.holdPiece(p.color);
                 ghostPiece.erase();
+
                 p.drawGhost();
+                p.draw();
 
                 if (holdIsEmpty) {
                     holdIsEmpty = false;
@@ -148,11 +150,10 @@ function CONTROLDOWN(event) {
             if (p.color == LIGHT_BLUE && p.collision(0, 0, p.currentRotation)) {
                 p.rotationIndex = (p.rotationIndex + 1) % p.tetromino.length;
                 p.currentRotation = p.tetromino[p.rotationIndex];
-                while (p.collision(0, 0, p.currentRotation)) {
+                while (p.collision(0, p.y, p.currentRotation)) {
                     p.y--;
                 }
                 p.draw();
-                console.log("Test");
             }
             r;
 
@@ -369,7 +370,6 @@ Piece.prototype.switchHold = function (playerPiece) {
             p.y--;
         }
         p.draw();
-        console.log("Test");
     }
     r;
 
@@ -421,6 +421,10 @@ Piece.prototype.holdPiece = function (color) {
         }
 
         p.rotationIndex = 0;
+
+        while (p.collision(0, 0, p.currentRotation)) {
+            p.y--;
+        }
 
         p.draw();
     }
@@ -492,6 +496,10 @@ Piece.prototype.lock = function () {
     if (isCombo) {
         combos += 1;
         isCombo = false;
+
+        // Update highest combo if needed
+        if (combos > document.getElementById("Highest-combo-value").innerHTML)
+            document.getElementById("Highest-combo-value").innerHTML = combos;
     } else {
         combos = 0;
     }

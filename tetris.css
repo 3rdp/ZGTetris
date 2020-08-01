@@ -4,6 +4,10 @@ body {
     margin: 0;
 }
 
+#Title {
+    text-transform: uppercase;
+}
+
 .Page {
     display: flex;
     flex-direction: column;
@@ -128,4 +132,18 @@ h2 {
 
 #Held-piece {
     margin-top: 20px;
+}
+
+#coder {
+    text-decoration: none;
+    color: black;
+}
+
+.button {
+    width: 100px;
+    text-align: center;
+}
+
+#controls-button {
+    cursor: pointer;
 }
