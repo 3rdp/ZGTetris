@@ -29,6 +29,7 @@ h2 {
 .Hold {
     align-self: flex-start;
     background: white;
+    text-align: center;
 }
 
 .Game {
@@ -42,12 +43,13 @@ h2 {
 }
 
 #canvas {
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 .number {
     font-family: "Montserrat", sans-serif;
     text-align: center;
+    width: 100px;
 }
 
 .value {
@@ -146,4 +148,8 @@ h2 {
 
 #controls-button {
     cursor: pointer;
+}
+
+.sidemenu {
+    width: 100px;
 }
